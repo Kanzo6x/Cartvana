@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viridian Castle Co.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Playfair Display', serif;
+        }
+        .nav-bar {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto;
+            background-color: white;
+            padding: 15px 40px;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 50px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-size: 16px;
+            text-transform: uppercase;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #a6603a;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        .left-section {
+            flex: 2;
+            background-color: #a6603a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px;
+        }
+        .logo {
+            position: absolute;
+            top: 80px; /* Adjusted for nav bar */
+            left: 40px;
+            color: #efe3b8;
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeIn 1s ease-in forwards;
+            animation-delay: 0.3s;
+        }
+        .text-content {
+            color: #efe3b8;
+            font-size: 48px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            font-weight: 400;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideFadeIn 1s ease-out forwards;
+        }
+        .shop-button {
+            padding: 10px 20px;
+            border: 2px solid #efe3b8;
+            color: #efe3b8;
+            background-color: transparent;
+            font-size: 16px;
+            cursor: pointer;
+            text-transform: uppercase;
+            width: fit-content;
+            font-weight: 700;
+            opacity: 0;
+            animation: fadeIn 1s ease-in forwards;
+            animation-delay: 0.5s;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        .shop-button:hover {
+            transform: scale(1.05);
+            background-color: rgba(239, 227, 184, 0.1);
+        }
+        .right-section {
+            flex: 3;
+            background-image: url('{{ url_for("static", filename="images/home1.jpg") }}');
+            background-size: cover;
+            background-position: center;
+        }
+        @keyframes slideFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#products">Products</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="left-section">
+            <div class="logo">Viridian Castle Co.</div>
+            <div class="text-content">
+                Organic products<br>made with love.<br>That's what you<br>get from us.
+            </div>
+            <button class="shop-button">Shop Now</button>
+        </div>
+        <div class="right-section"></div>
+    </div>
+</body>
+</html>

@@ -4,43 +4,54 @@ from flask_migrate import Migrate
 from flask_admin import Admin
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
+from flask_admin.contrib.sqla import ModelView
+from cartvana.admin import AdminModelView
 
 db = SQLAlchemy()
 migrate = Migrate()
 LoginManager = LoginManager()
-admin = Admin()
 bcrypt = Bcrypt()
 
-def createApp():
-    #configure the app 
-    app=Flask(__name__)
+#Set up Admin correctly with name and template_mode here
+admin = Admin(name='Cartvana Admin', template_mode='bootstrap3')
+
+def create_app():
+    # Configure the app 
+    app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cartvana.db'
 
-    #intilize extensions with the app 
+    # Initialize extensions with the app 
     db.init_app(app)
     admin.init_app(app)
     migrate.init_app(app, db)
     LoginManager.init_app(app)
+    LoginManager.login_view = 'ui.login'  # ← TODO: Set your login route here
     bcrypt.init_app(app)
 
-    #set the secret key for the app
-    app.secret_key='cartvana'
+    # Set the secret key for the app
+    app.secret_key = 'cartvana'
 
-    #setting the admin dashboard
-    admin.setup(name='Cartvana Admin', template_mode='bootstrap3', index_view_name='Cartvana Admin')
-    
+    # Import the models
+    from cartvana.ui.models import User, Category, Product, Cart, CartItem, Order, OrderItem  
 
-    #set the login loader manager class 
-    # import the class here 
+    # Set the login loader manager class 
     @LoginManager.user_loader
     def load_user(uid):
-        #return User.query.get(int(uid))
-        pass
-    
-    #put here all the registers and blueprints
+        return User.query.get(int(uid))
+
+    #Register blueprints here
+    from cartvana.ui.routes import ui
+    app.register_blueprint(ui)
 
 
-    #put here all the modules and add it to admin view 
-
+    # Add views to the admin interface
+    #admin.add_view(ModelView(User, db.session))
+    admin.add_view(ModelView(Category, db.session))
+    admin.add_view(ModelView(Product, db.session))
+    admin.add_view(ModelView(Cart, db.session))
+    admin.add_view(ModelView(CartItem, db.session))
+    admin.add_view(ModelView(Order, db.session))
+    admin.add_view(ModelView(OrderItem, db.session))
+    admin.add_view(AdminModelView(User, db.session)) 
 
     return app
