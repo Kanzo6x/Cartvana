@@ -3,143 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viridian Castle Co.</title>
+    <title>Cartvana.</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Playfair Display', serif;
-        }
-        .nav-bar {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: auto;
-            background-color: white;
-            padding: 15px 40px;
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 50px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-
-        .nav-links a {
-            color: #333;
-            text-decoration: none;
-            font-size: 16px;
-            text-transform: uppercase;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: #a6603a;
-        }
-
-        .container {
-            display: flex;
-            height: 100vh;
-        }
-        .left-section {
-            flex: 2;
-            background-color: #a6603a;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 40px;
-        }
-        .logo {
-            position: absolute;
-            top: 80px; /* Adjusted for nav bar */
-            left: 40px;
-            color: #efe3b8;
-            font-size: 18px;
-            font-weight: 700;
-            text-transform: uppercase;
-            opacity: 0;
-            animation: fadeIn 1s ease-in forwards;
-            animation-delay: 0.3s;
-        }
-        .text-content {
-            color: #efe3b8;
-            font-size: 48px;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            font-weight: 400;
-            opacity: 0;
-            transform: translateX(-20px);
-            animation: slideFadeIn 1s ease-out forwards;
-        }
-        .shop-button {
-            padding: 10px 20px;
-            border: 2px solid #efe3b8;
-            color: #efe3b8;
-            background-color: transparent;
-            font-size: 16px;
-            cursor: pointer;
-            text-transform: uppercase;
-            width: fit-content;
-            font-weight: 700;
-            opacity: 0;
-            animation: fadeIn 1s ease-in forwards;
-            animation-delay: 0.5s;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-        }
-        .shop-button:hover {
-            transform: scale(1.05);
-            background-color: rgba(239, 227, 184, 0.1);
-        }
-        .right-section {
-            flex: 3;
-            background-image: url('{{ url_for("static", filename="images/home1.jpg") }}');
-            background-size: cover;
-            background-position: center;
-        }
-        @keyframes slideFadeIn {
-            0% {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
-    </style>
+    <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
+    <div class="auth-section">
+        {% if current_user.is_authenticated %}
+            <div class="user-menu">
+                <div class="user-menu-trigger">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <span class="user-name">{{ current_user.username }}</span>
+                </div>
+                <div class="dropdown-menu">
+                    <a href="{{ url_for('ui.my_orders') }}">My Orders</a>
+                    <a href="{{ url_for('ui.logout') }}">Logout</a>
+                </div>
+            </div>
+        {% else %}
+            <div class="auth-buttons">
+                <button class="auth-button login-btn" onclick="window.location.href='{{ url_for('ui.login') }}'">Log In</button>
+                <button class="auth-button register-btn" onclick="window.location.href='{{ url_for('ui.register') }}'">Register</button>
+            </div>
+        {% endif %}
+    </div>
     <nav class="nav-bar">
         <div class="nav-links">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#products">Products</a>
-            <a href="#contact">Contact</a>
+            <a href="{{ url_for('ui.home') }}">Home</a>
+            <a href="{{ url_for('ui.shop') }}">Shop</a>
+            <a href="{{ url_for('ui.search') }}">Search</a>
+            <a href="{{ url_for('ui.my_cart') }}">MyCart</a>
         </div>
     </nav>
     <div class="container">
         <div class="left-section">
-            <div class="logo">Viridian Castle Co.</div>
+            <div class="logo">Cartvana.</div>
             <div class="text-content">
-                Organic products<br>made with love.<br>That's what you<br>get from us.
+                Quality products<br>crafted with care.<br>That’s the experience<br>you get from us.
             </div>
             <button class="shop-button">Shop Now</button>
         </div>
         <div class="right-section"></div>
     </div>
+    <div class="story-section">
+        <div class="story-image"></div>
+        <div class="story-text">
+            <h2>Our Shop Story</h2>
+            <p>Cartvana. Delivers quality products with passion and precision, putting our customers' satisfaction and seamless shopping experience at the heart of everything we do.</p>
+        </div>
+    </div>
+    <div class="categories-section">
+        <h2>Categories</h2>
+        <div class="categories-grid">
+            <div class="category-item">
+                <div class="category-image" style="background-image: url('test3.jpg')"></div>
+                <h3>Essential Oils</h3>
+                <button class="category-button">Shop Now</button>
+            </div>
+            <div class="category-item">
+                <div class="category-image" style="background-image: url('test3.jpg')"></div>
+                <h3>Organic Soaps</h3>
+                <button class="category-button">Shop Now</button>
+            </div>
+            <div class="category-item">
+                <div class="category-image" style="background-image: url('test3.jpg')"></div>
+                <h3>Soy Candles</h3>
+                <button class="category-button">Shop Now</button>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About Us</h4>
+                <p>Cartvana. Delivers quality products with passion and precision, putting our customers' satisfaction and seamless shopping experience at the heart of everything we do.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="{{ url_for('ui.home') }}">Home</a>
+                <a href="{{ url_for('ui.shop') }}">Shop</a>
+                <a href="{{ url_for('ui.search') }}">Search</a>
+                <a href="{{ url_for('ui.my_cart') }}">MyCart</a>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>Email: info@Cartvana.com</p>
+                <p>Phone: (555) 123-4567</p>
+                <p>Address: 123 Nature Street, Green City</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Cartvana. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="{{ url_for('static',filename='js/home.js')}}"></script>
 </body>
 </html>

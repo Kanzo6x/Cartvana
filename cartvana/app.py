@@ -17,7 +17,7 @@ admin = Admin(name='Cartvana Admin', template_mode='bootstrap3')
 
 def create_app():
     # Configure the app 
-    app = Flask(__name__)
+    app = Flask(__name__,static_folder='static')
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cartvana.db'
 
     # Initialize extensions with the app 
