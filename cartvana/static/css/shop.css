@@ -1,0 +1,122 @@
+.shop-container {
+    padding-top: 100px;
+    min-height: 100vh;
+    background-color: #fff;
+}
+
+.categories-section, .products-section {
+    padding: 40px;
+}
+
+.categories-grid, .products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.category-card {
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+}
+
+.category-card.active {
+    border: 2px solid #a6603a;
+    transform: translateY(-5px);
+}
+
+.category-image {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+}
+
+.category-card h3 {
+    padding: 15px;
+    margin: 0;
+    color: #a6603a;
+    text-align: center;
+}
+
+.product-card {
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-image {
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+}
+
+.product-card h3 {
+    padding: 15px;
+    margin: 0;
+    color: #333;
+    font-size: 18px;
+}
+
+.price {
+    padding: 0 15px;
+    color: #a6603a;
+    font-weight: bold;
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+.add-to-cart-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #a6603a;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #8b4f31;
+}
+
+.products-section {
+    margin-top: 40px;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@media screen and (max-width: 1024px) {
+    .categories-grid, .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .categories-grid, .products-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .category-image, .product-image {
+        height: 180px;
+    }
+}

@@ -9,35 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <div class="auth-section">
-        {% if current_user.is_authenticated %}
-            <div class="user-menu">
-                <div class="user-menu-trigger">
-                    <div class="user-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <span class="user-name">{{ current_user.username }}</span>
-                </div>
-                <div class="dropdown-menu">
-                    <a href="{{ url_for('ui.my_orders') }}">My Orders</a>
-                    <a href="{{ url_for('ui.logout') }}">Logout</a>
-                </div>
-            </div>
-        {% else %}
-            <div class="auth-buttons">
-                <button class="auth-button login-btn" onclick="window.location.href='{{ url_for('ui.login') }}'">Log In</button>
-                <button class="auth-button register-btn" onclick="window.location.href='{{ url_for('ui.register') }}'">Register</button>
-            </div>
-        {% endif %}
-    </div>
-    <nav class="nav-bar">
-        <div class="nav-links">
-            <a href="{{ url_for('ui.home') }}">Home</a>
-            <a href="{{ url_for('ui.shop') }}">Shop</a>
-            <a href="{{ url_for('ui.search') }}">Search</a>
-            <a href="{{ url_for('ui.my_cart') }}">MyCart</a>
-        </div>
-    </nav>
+
+    {% include 'ui/components/nav.html' %}
+
     <div class="container">
         <div class="left-section">
             <div class="logo">Cartvana.</div>
@@ -58,47 +32,18 @@
     <div class="categories-section">
         <h2>Categories</h2>
         <div class="categories-grid">
+            {% for category in categories %}
             <div class="category-item">
-                <div class="category-image" style="background-image: url('test3.jpg')"></div>
-                <h3>Essential Oils</h3>
-                <button class="category-button">Shop Now</button>
+                <div class="category-image" style="background-image: url('data:image/jpeg;base64,{{ category.image_data|b64encode|safe }}')"></div>
+                <h3>{{ category.name }}</h3>
+                <button class="category-button" onclick="window.location.href='{{ url_for('ui.shop') }}?category={{ category.id }}'">Shop Now</button>
             </div>
-            <div class="category-item">
-                <div class="category-image" style="background-image: url('test3.jpg')"></div>
-                <h3>Organic Soaps</h3>
-                <button class="category-button">Shop Now</button>
-            </div>
-            <div class="category-item">
-                <div class="category-image" style="background-image: url('test3.jpg')"></div>
-                <h3>Soy Candles</h3>
-                <button class="category-button">Shop Now</button>
-            </div>
+            {% endfor %}
         </div>
     </div>
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>About Us</h4>
-                <p>Cartvana. Delivers quality products with passion and precision, putting our customers' satisfaction and seamless shopping experience at the heart of everything we do.</p>
-            </div>
-            <div class="footer-section">
-                <h4>Quick Links</h4>
-                <a href="{{ url_for('ui.home') }}">Home</a>
-                <a href="{{ url_for('ui.shop') }}">Shop</a>
-                <a href="{{ url_for('ui.search') }}">Search</a>
-                <a href="{{ url_for('ui.my_cart') }}">MyCart</a>
-            </div>
-            <div class="footer-section">
-                <h4>Contact</h4>
-                <p>Email: info@Cartvana.com</p>
-                <p>Phone: (555) 123-4567</p>
-                <p>Address: 123 Nature Street, Green City</p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 Cartvana. All rights reserved.</p>
-        </div>
-    </footer>
+
+    {% include 'ui/components/footer.html' %}
+    
     <script src="{{ url_for('static',filename='js/home.js')}}"></script>
 </body>
 </html>

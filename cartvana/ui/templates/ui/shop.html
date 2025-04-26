@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Cartvana.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/shop.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    
+    {% include 'ui/components/nav.html' %}
+
+    <!-- Shop Content -->
+    <div class="shop-container">
+        <div class="logo">Cartvana.</div>
+        
+        <!-- Categories Section -->
+        <div class="categories-section">
+            <h2>Our Categories</h2>
+            <div class="categories-grid">
+                {% for category in categories %}
+                <div class="category-card" data-category="{{ category.id }}" onclick="showProducts('{{ category.id }}')">
+                    <div class="category-image" style="background-image: url('data:image/jpeg;base64,{{ category.image_data|b64encode|safe }}')"></div>
+                    <h3>{{ category.name }}</h3>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Products Section -->
+        <div class="products-section" id="products-section" style="display: none;">
+            <div class="products-grid" id="products-container">
+            </div>
+        </div>
+    </div>
+
+    {% include 'ui/components/footer.html' %}
+
+    <script src="{{ url_for('static', filename='js/shop.js') }}"></script>
+</body>
+</html>

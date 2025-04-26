@@ -25,7 +25,7 @@ def create_app():
     admin.init_app(app)
     migrate.init_app(app, db)
     LoginManager.init_app(app)
-    LoginManager.login_view = 'ui.login'  # ← TODO: Set your login route here
+    LoginManager.login_view = 'ui.login'  
     bcrypt.init_app(app)
 
     # Set the secret key for the app
@@ -41,17 +41,20 @@ def create_app():
 
     #Register blueprints here
     from cartvana.ui.routes import ui
+    from cartvana.user_auth.routes import auth
+    from cartvana.shop.routes import shop
     app.register_blueprint(ui)
-
+    app.register_blueprint(auth)
+    app.register_blueprint(shop)
 
     # Add views to the admin interface
     #admin.add_view(ModelView(User, db.session))
-    admin.add_view(ModelView(Category, db.session))
-    admin.add_view(ModelView(Product, db.session))
-    admin.add_view(ModelView(Cart, db.session))
-    admin.add_view(ModelView(CartItem, db.session))
-    admin.add_view(ModelView(Order, db.session))
-    admin.add_view(ModelView(OrderItem, db.session))
+    admin.add_view(AdminModelView(Category, db.session))
+    admin.add_view(AdminModelView(Product, db.session))
+    admin.add_view(AdminModelView(Cart, db.session))
+    admin.add_view(AdminModelView(CartItem, db.session))
+    admin.add_view(AdminModelView(Order, db.session))
+    admin.add_view(AdminModelView(OrderItem, db.session))
     admin.add_view(AdminModelView(User, db.session)) 
 
     return app

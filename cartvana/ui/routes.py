@@ -1,36 +1,48 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, flash, get_flashed_messages
 from flask_login import login_required, current_user, logout_user
 from cartvana.app import db
+from cartvana.ui.models import Category, Product
+from base64 import b64encode
 
-ui = Blueprint('ui', __name__, template_folder='templates' ,static_folder='static')
+ui = Blueprint('ui', __name__, template_folder='templates')
+ui.add_app_template_filter(b64encode, 'b64encode')
 
 @ui.route('/',methods=['GET'])
 def home():
-    return render_template('ui/home.html')
+    messages = get_flashed_messages()
+    categories = Category.query.all()
+    return render_template('ui/home.html', messages=messages, categories=categories)
 
 @ui.route('/login',methods=['GET'])
 def login():
-    return 'Login Page'
+    messages = get_flashed_messages()
+    if current_user.is_authenticated:
+        return redirect(url_for('ui.home'))
+    return render_template('ui/login.html', messages=messages)
 
 @ui.route('/register',methods=['GET'])
 def register():
-    return 'Register Page'
+    messages = get_flashed_messages()
+    if current_user.is_authenticated:
+        return redirect(url_for('ui.home'))
+    return render_template('ui/register.html', messages=messages)
 
 @ui.route('/shop',methods=['GET'])
 def shop():
-    return 'shop'
+    categories = Category.query.all()
+    return render_template('ui/shop.html', categories=categories)
 
 @ui.route('/Search',methods=['GET'])
 def search():
     return 'Search Page'
 
-@login_required
 @ui.route('/MyCart',methods=['GET'])
+@login_required
 def my_cart():
     return 'My Cart Page'
 
-@login_required
 @ui.route('/MyOrders',methods=['GET'])
+@login_required
 def my_orders():
     return 'My Orders Page'
 
@@ -39,3 +51,11 @@ def my_orders():
 def logout():
     logout_user()
     return redirect(url_for('ui.home'))
+
+@ui.route('/product/<int:product_id>')
+def product_detail(product_id):
+    product = Product.query.get(product_id)
+    if not product:
+        flash('Product not found', 'error')
+        return redirect(url_for('ui.shop'))
+    return render_template('ui/product_detail.html', product=product)
