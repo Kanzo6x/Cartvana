@@ -9,7 +9,7 @@ async function showProducts(categoryId) {
         data.products.forEach(product => {
             const productCard = `
                 <div class="product-card">
-                    <div class="product-image" style="background-image: url('data:image/jpeg;base64,${product.image}')"></div>
+                    <div class="product-image" style="background-image: url('${product.image_url}')"></div>
                     <h3>${product.name}</h3>
                     <p class="price">$${product.price.toFixed(2)}</p>
                     <button class="show-product-btn" onclick="window.location.href='/product/${product.id}'">Show</button>

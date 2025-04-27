@@ -1,49 +1,110 @@
 .shop-container {
-    padding-top: 100px;
     min-height: 100vh;
+    background: linear-gradient(135deg, #a6603a 0%, #8b4f31 100%);
+    padding: 0 40px 40px;
+}
+
+.header-section {
+    background: linear-gradient(135deg, #a6603a 0%, #8b4f31 100%);
+    padding: 80px 40px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
+.header-section .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+
+.categories-section {
+    padding: 20px 40px;
+    background: transparent;
+}
+
+.categories-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.categories-section h2::after {
+    content: '';
+    width: 60px;
+    height: 2px;
     background-color: #fff;
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-.categories-section, .products-section {
-    padding: 40px;
-}
-
-.categories-grid, .products-grid {
+.categories-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 30px;
-    margin-top: 30px;
+    padding: 0;
 }
 
 .category-card {
-    background-color: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #fff 0%, #f5e9e2 100%);
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 0 auto;
 }
 
 .category-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .category-card.active {
-    border: 2px solid #a6603a;
-    transform: translateY(-5px);
+    border: 2px solid #fff;
+    background: linear-gradient(135deg, #fff 0%, #f5e9e2 100%);
 }
 
-.category-image {
-    height: 200px;
-    background-size: cover;
-    background-position: center;
+.category-card.active h3 {
+    color: #a6603a;
 }
 
 .category-card h3 {
-    padding: 15px;
     margin: 0;
     color: #a6603a;
     text-align: center;
+    padding: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.products-section {
+    padding: 40px;
+    background: #fff;
+    border-radius: 20px;
+    margin-top: 40px;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 30px;
 }
 
 .product-card {
@@ -60,8 +121,9 @@
 
 .product-image {
     height: 250px;
-    background-size: cover;
+    background-size: contain;
     background-position: center;
+    background-repeat: no-repeat;
 }
 
 .product-card h3 {
@@ -94,10 +156,38 @@
     background-color: #8b4f31;
 }
 
-.products-section {
-    margin-top: 40px;
-    opacity: 0;
-    animation: fadeIn 0.5s ease-out forwards;
+.buy-button {
+    width: 100%;
+    padding: 15px;
+    background-color: #a6603a;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.buy-button:hover {
+    background-color: #8b4f31;
+}
+
+.description {
+    padding: 0 15px;
+    color: #666;
+    font-size: 0.9em;
+    margin: 10px 0;
+}
+
+.login-message {
+    color: #ff4444;
+    text-align: center;
+    margin: 10px 0;
+    font-size: 0.9em;
+}
+
+.login-message a {
+    color: #a6603a;
+    text-decoration: underline;
 }
 
 @keyframes fadeIn {
@@ -116,7 +206,12 @@
         grid-template-columns: 1fr;
     }
     
-    .category-image, .product-image {
-        height: 180px;
+    .category-card {
+        width: 150px;
+        height: 150px;
+    }
+
+    .category-card h3 {
+        font-size: 1.2rem;
     }
 }

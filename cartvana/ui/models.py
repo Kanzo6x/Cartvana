@@ -21,10 +21,14 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
-    image_data = db.Column(db.LargeBinary)  
+    image = db.Column(db.String(255))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-    products = db.relationship('Product', backref='category', lazy=True)
+    
+    def __str__(self):
+        return str(self.name)
+    
+    def __repr__(self):
+        return f'<Category {self.name}>'
 
 # ----------------------
 # 3. Products
@@ -35,13 +39,20 @@ class Product(db.Model):
     description = db.Column(db.Text)
     price = db.Column(db.Float, nullable=False)
     stock_quantity = db.Column(db.Integer, nullable=False)
-    image_data = db.Column(db.LargeBinary)
+    image = db.Column(db.String(255))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=True)
 
     cart_items = db.relationship('CartItem', backref='product', lazy=True)
     order_items = db.relationship('OrderItem', backref='product', lazy=True)
+
+    @property
+    def image_url(self):
+        if self.image:
+            return f'uploads/{self.image}'
+        return 'images/default.jpg'
+
+    def __str__(self):
+        return str(self.name)
 
 # ----------------------
 # 4. Carts

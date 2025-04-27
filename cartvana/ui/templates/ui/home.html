@@ -18,7 +18,7 @@
             <div class="text-content">
                 Quality products<br>crafted with care.<br>That’s the experience<br>you get from us.
             </div>
-            <button class="shop-button">Shop Now</button>
+            <button class="shop-button" onclick="window.location.href='{{ url_for('ui.shop') }}'">Shop Now</button>
         </div>
         <div class="right-section"></div>
     </div>
@@ -30,13 +30,14 @@
         </div>
     </div>
     <div class="categories-section">
-        <h2>Categories</h2>
+        <h2>Top Rated Products</h2>
         <div class="categories-grid">
-            {% for category in categories %}
+            {% for product in random_products %}
             <div class="category-item">
-                <div class="category-image" style="background-image: url('data:image/jpeg;base64,{{ category.image_data|b64encode|safe }}')"></div>
-                <h3>{{ category.name }}</h3>
-                <button class="category-button" onclick="window.location.href='{{ url_for('ui.shop') }}?category={{ category.id }}'">Shop Now</button>
+                <div class="category-image" style="background-image: url('{{ url_for('static', filename=product.image_url) }}')"></div>
+                <h3>{{ product.name }}</h3>
+                <p class="product-price">${{ "%.2f"|format(product.price) }}</p>
+                <button class="category-button" onclick="window.location.href='{{ url_for('ui.product_detail', product_id=product.id) }}'">Show Details</button>
             </div>
             {% endfor %}
         </div>

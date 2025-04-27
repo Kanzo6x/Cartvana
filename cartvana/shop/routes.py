@@ -1,7 +1,6 @@
-from flask import Blueprint
+from flask import Blueprint, url_for
 from flask_restful import Api, Resource
 from cartvana.ui.models import Product, Category
-from base64 import b64encode
 
 shop = Blueprint('shop', __name__)
 api = Api(shop)
@@ -22,7 +21,7 @@ class ProductResource(Resource):
                     'price': p.price,
                     'stock_quantity': p.stock_quantity,
                     'category_id': p.category_id,
-                    'image': b64encode(p.image_data).decode('utf-8') if p.image_data else None
+                    'image_url': url_for('static', filename=p.image) if p.image else None
                 } for p in products
             ]
         }

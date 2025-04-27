@@ -10,35 +10,32 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    
     {% include 'ui/components/nav.html' %}
 
-    <!-- Shop Content -->
     <div class="shop-container">
-        <div class="logo">Cartvana.</div>
-        
-        <!-- Categories Section -->
-        <div class="categories-section">
-            <h2>Our Categories</h2>
-            <div class="categories-grid">
-                {% for category in categories %}
-                <div class="category-card" data-category="{{ category.id }}" onclick="showProducts('{{ category.id }}')">
-                    <div class="category-image" style="background-image: url('data:image/jpeg;base64,{{ category.image_data|b64encode|safe }}')"></div>
-                    <h3>{{ category.name }}</h3>
-                </div>
-                {% endfor %}
-            </div>
+        <div class="header-section">
+            <div class="logo">Cartvana.</div>
         </div>
 
-        <!-- Products Section -->
-        <div class="products-section" id="products-section" style="display: none;">
-            <div class="products-grid" id="products-container">
+        <div class="products-section">
+            <div class="products-grid">
+                {% for product in products %}
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('{{ url_for('static', filename=product.image_url) }}')"></div>
+                    <h3>{{ product.name }}</h3>
+                    <p class="price">${{ "%.2f"|format(product.price) }}</p>
+                    <p class="description">{{ product.description[:100] }}...</p>
+                    {% if current_user.is_authenticated %}
+                        <button class="buy-button" onclick="window.location.href='{{ url_for('ui.product_detail', product_id=product.id) }}'">Buy</button>
+                    {% else %}
+                        <p class="login-message">Please <a href="{{ url_for('ui.login') }}">login</a> to purchase</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
 
     {% include 'ui/components/footer.html' %}
-
-    <script src="{{ url_for('static', filename='js/shop.js') }}"></script>
 </body>
 </html>

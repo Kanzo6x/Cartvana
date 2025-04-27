@@ -5,7 +5,8 @@ from flask_admin import Admin
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 from flask_admin.contrib.sqla import ModelView
-from cartvana.admin import AdminModelView
+from cartvana.admin import AdminModelView, ProductModelView
+import os
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -17,8 +18,15 @@ admin = Admin(name='Cartvana Admin', template_mode='bootstrap3')
 
 def create_app():
     # Configure the app 
-    app = Flask(__name__,static_folder='static')
+    app = Flask(__name__, static_folder='static')
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cartvana.db'
+    
+    # Fix upload configuration to use absolute path
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    app.config['UPLOAD_FOLDER'] = os.path.join(base_dir, 'static', 'uploads')
+    
+    # Create uploads directory if it doesn't exist
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
     # Initialize extensions with the app 
     db.init_app(app)
@@ -50,7 +58,7 @@ def create_app():
     # Add views to the admin interface
     #admin.add_view(ModelView(User, db.session))
     admin.add_view(AdminModelView(Category, db.session))
-    admin.add_view(AdminModelView(Product, db.session))
+    admin.add_view(ProductModelView(Product, db.session))
     admin.add_view(AdminModelView(Cart, db.session))
     admin.add_view(AdminModelView(CartItem, db.session))
     admin.add_view(AdminModelView(Order, db.session))

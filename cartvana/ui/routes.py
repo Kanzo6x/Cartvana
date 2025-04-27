@@ -1,17 +1,17 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, get_flashed_messages
+from flask import Blueprint, render_template, request, redirect, url_for, flash, get_flashed_messages, current_app
 from flask_login import login_required, current_user, logout_user
 from cartvana.app import db
 from cartvana.ui.models import Category, Product
-from base64 import b64encode
 
 ui = Blueprint('ui', __name__, template_folder='templates')
-ui.add_app_template_filter(b64encode, 'b64encode')
 
 @ui.route('/',methods=['GET'])
 def home():
     messages = get_flashed_messages()
+    # Get 3 random products
+    random_products = Product.query.order_by(db.func.random()).limit(3).all()
     categories = Category.query.all()
-    return render_template('ui/home.html', messages=messages, categories=categories)
+    return render_template('ui/home.html', messages=messages, random_products=random_products, categories=categories)
 
 @ui.route('/login',methods=['GET'])
 def login():
@@ -29,8 +29,12 @@ def register():
 
 @ui.route('/shop',methods=['GET'])
 def shop():
+    products = Product.query.all()
     categories = Category.query.all()
-    return render_template('ui/shop.html', categories=categories)
+    # Debug logging
+    for category in categories:
+        print(f"Category: {category.name}, Image: {category.image}")
+    return render_template('ui/shop.html', products=products, categories=categories)
 
 @ui.route('/Search',methods=['GET'])
 def search():
